@@ -3,13 +3,17 @@ type UserTypes = {
     password: string
     name?: string
   }
-  
-type LoginResponse = {
-    token: string
+
+  type ResponseType = {
+    statusCode: number
+    responseObject: {
+      token: string
+      name: string 
+      message: string 
+    }
   }
-
-
-export async function ApiLogin({email, password}:UserTypes):Promise<LoginResponse>{
+  
+export async function ApiLogin({email, password}:UserTypes):Promise<ResponseType>{
     const response = await fetch('https://arnia-kanban.vercel.app/api/user/login', {
         method: 'POST',
         headers: {
@@ -22,13 +26,18 @@ export async function ApiLogin({email, password}:UserTypes):Promise<LoginRespons
           password
         })
       })
-    
-    const data = await response.json()
-    console.log(data)
-    return(data)
+    const statusCode = response.status
+    const responseObject = await response.json()
+
+    const teste = {
+      statusCode,
+      responseObject
+    }
+
+    return(teste)
 }
 
-export async function ApiRegister({email, password,name}:UserTypes):Promise<Response>{
+export async function ApiRegister({email, password,name}:UserTypes):Promise<ResponseType>{
   const response = await fetch('https://arnia-kanban.vercel.app/api/user', {
       method: 'POST',
       headers: {
@@ -42,6 +51,13 @@ export async function ApiRegister({email, password,name}:UserTypes):Promise<Resp
       })
     })
 
-  const data = await response.json()
-  return(data)
+    const statusCode = response.status
+    const responseObject = await response.json()
+
+    const teste = {
+      statusCode,
+      responseObject
+    }
+
+    return(teste)
 }

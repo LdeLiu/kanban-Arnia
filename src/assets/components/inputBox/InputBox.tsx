@@ -1,5 +1,6 @@
-import { StyledInput, StyledInputComponent, StyledTextInput } from "./style";
 import { ChangeEventHandler } from "react"
+
+import { StyledInput, StyledInputComponent, StyledTextInput } from "./style";
 
 type Props = {
     label: string
@@ -14,8 +15,5 @@ export function InputBox({label,funcao,type}: Props){
             <StyledTextInput>{label}</StyledTextInput>
             <StyledInput onChange={funcao} type={type}/>
         </StyledInputComponent>
-        
     )
 }
-
-// colocar onchande no input, recebendo a função como props:

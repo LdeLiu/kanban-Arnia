@@ -1,8 +1,8 @@
 import { StyledTitle } from "./style";
 
 type props = {
-    mb: string
-    fs: string
+    mb?: string
+    fs?: string
 }
 
 export function PageTitle({mb,fs}: props){

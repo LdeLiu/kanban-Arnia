@@ -1,4 +1,6 @@
+import { useState,useEffect } from 'react';
 
+import { CreateCard, GetCard } from "../../../services/cards";
 import { Button } from "../buttonsMain/style";
 import { Card } from "../card/Card";
 import { StyledCard, StyledCardComponent } from "../card/style";
@@ -8,39 +10,48 @@ import { StyledColoun } from "./style";
 
 type props = {
     type: string
-    
+}
+type dataType = {
+        _id: string
+        title: string
+        content: string
+        column: string
+        userId: string
+        __v: number
 }
 
-const arr = [
-    {
-        title: "teste",
-        content: "teste",
-        column: "todo"
-    },
-    {
-        title: "teste1",
-        content: "teste1",
-        column: "done"
-    },
-    {
-        title: "teste2",
-        content: "teste2",
-        column: "done"
-    },
-    {
-        title: "teste3",
-        content: "teste3",
-        column: "done"
-    },
-    {
-        title: "teste4",
-        content: "teste4",
-        column: "done"
-    }
-]
-// simulando dados recebidos da api
-
 export function Coloun({type}: props){
+
+    const [data,setData] = useState<dataType[]>([])
+    const [inputValue,setInputValue] = useState('')
+    const [textAreaValue,setTextAreaValue] = useState('')
+    const [reload,setReload] = useState(true)
+
+    const chengeReload = () => {
+        console.log('reloading...')
+        setReload(!reload)
+    }
+    const chengeInputValue = (e: React.FormEvent<HTMLInputElement>) => {
+        setInputValue(e.currentTarget.value)
+      }
+    const chengeTextValue = (e: React.FormEvent<HTMLTextAreaElement>) => {
+        setTextAreaValue(e.currentTarget.value)
+      }
+    const chengeCreateCard = ()=>{
+        const obj = {
+            title: inputValue,
+            content: textAreaValue
+        }
+        CreateCard(obj)
+        setInputValue('')
+        setTextAreaValue('')
+    }
+    const chengeData = async () => {
+        setData(await GetCard())
+    }
+    useEffect(()=>{
+        chengeData()
+    },[reload])
 
     return(
         <StyledColoun>
@@ -49,9 +60,9 @@ export function Coloun({type}: props){
                     <h3>NOVO</h3>
                        <StyledCardComponent>
                             <StyledCard>
-                                <StyledInputTitle/>
-                                <StyledTextArea />
-                                <Button><img src="plus.png" alt="" /></Button>
+                                <StyledInputTitle value={inputValue} onChange={chengeInputValue}/>
+                                <StyledTextArea value={textAreaValue} onChange={chengeTextValue}/>
+                                <Button><img src="plus.png" alt="" onClick={chengeCreateCard}/></Button>
                             </StyledCard>
                        </StyledCardComponent>
                 </>
@@ -60,15 +71,15 @@ export function Coloun({type}: props){
             {type !== 'new' &&
                 <>
                     <TitleColoun type={type}/>
-                    {arr.map((elem) => {
-                        if(elem.column === 'todo' && type === 'todo'){
-                            return(<Card data={elem}/>)
+                    {data.map((elem,i) => {
+                        if(elem.column === 'TODO' && type === 'todo'){
+                            return(<Card key={i} data={elem} reload={chengeReload}/>)
                         }
-                        if(elem.column === 'doing' && type === 'doing'){
-                            return(<Card data={elem}/>)
+                        if(elem.column === 'DOING' && type === 'doing'){
+                            return(<Card key={i} data={elem} reload={chengeReload}/>)
                         }
-                        if(elem.column === 'done' && type === 'done'){
-                            return(<Card data={elem}/>)
+                        if(elem.column === 'DONE' && type === 'done'){
+                            return(<Card key={i} data={elem} reload={chengeReload}/>)
                         }
                     })}
                 </>
