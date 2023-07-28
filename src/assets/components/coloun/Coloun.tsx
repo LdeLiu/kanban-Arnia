@@ -72,13 +72,7 @@ export function Coloun({type}: props){
                 <>
                     <TitleColoun type={type}/>
                     {data.map((elem,i) => {
-                        if(elem.column === 'TODO' && type === 'todo'){
-                            return(<Card key={i} data={elem} reload={chengeReload}/>)
-                        }
-                        if(elem.column === 'DOING' && type === 'doing'){
-                            return(<Card key={i} data={elem} reload={chengeReload}/>)
-                        }
-                        if(elem.column === 'DONE' && type === 'done'){
+                        if(elem.column === type ){
                             return(<Card key={i} data={elem} reload={chengeReload}/>)
                         }
                     })}

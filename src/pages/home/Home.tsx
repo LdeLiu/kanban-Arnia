@@ -8,7 +8,11 @@ import { Coloun } from "../../assets/components/coloun/Coloun";
 
 export function Home(){
 
-    const arr = ["new","todo", "doing", "done"]
+    const arr = ["new","TODO", "DOING", "DONE"]
+
+    const deslog = () => {
+        
+    }
 
     return(
         <>
